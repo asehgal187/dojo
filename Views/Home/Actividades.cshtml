@@ -1,0 +1,49 @@
+<a href="/home">Home</a>
+<a href="/logout">Logout</a>
+
+
+
+<h1>@ViewBag.PlannedAct.Name</h1>
+<h3>@ViewBag.PlannedAct.Date.ToString("MMMM, dd, yyyy")</h3>
+<h3>Event Coordinator: @ViewBag.PlannedAct.Creator.Name</h3>
+<h3>Description : @ViewBag.PlannedAct.Description</h3>
+<h3>Participants: </h3>
+
+@foreach(var i in @ViewBag.AllGuests)
+{
+    <p>@i.Guest.Name</p>
+}
+
+@{
+    bool isJoined = false;
+}
+
+@if(ViewBag.CurrentUser.UserId == ViewBag.PlannedAct.Creator.UserId)
+        {
+          isJoined = true;  
+        <a href="/delete/@ViewBag.PlannedAct.ActividadId"><button>Delete</button></a>
+             
+        }
+@foreach(var x in ViewBag.AllGuests)
+        {
+           
+            @if(x.UserId == ViewBag.CurrentUser.UserId)
+            {
+                isJoined = true;
+            }
+              
+            }
+            @if(isJoined == true && ViewBag.CurrentUser.UserId != ViewBag.PlannedAct.Creator.UserId)
+            {
+                <a href="/leave/@ViewBag.PlannedAct.ActividadId"><button>Leave</button></a>
+                    isJoined = false;  
+            }
+
+            else if(isJoined == false)
+            {
+                <a href="/join/@ViewBag.PlannedAct.ActividadId"><button>Join</button></a>
+            }
+        }
+        
+
+
